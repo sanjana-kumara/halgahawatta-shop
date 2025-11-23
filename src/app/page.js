@@ -7,12 +7,19 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // --- වෙනස් කළ කොටස පටන් ගන්නේ මෙතැනින් ---
   useEffect(() => {
-    fetch('/products.json')
-      .then(res => res.json())
+    // GitHub Pages වලදී URL එක වෙනස් වෙන නිසා Repo නම එකතු කරන්න ඕනේ
+    const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+    const basePath = isGitHubPages ? '/halgahawatta-shop' : '';
+
+    fetch(`${basePath}/products.json`)
+      .then(res => {
+        if (!res.ok) { throw new Error("HTTP error " + res.status); }
+        return res.json();
+      })
       .then(data => {
         if(Array.isArray(data)) {
-            // Logic: හැම Category එකෙන්ම එක Product එක බැගින් තෝරා ගැනීම (උපරිම 6ක්)
             const uniqueCategories = new Map();
             data.forEach(item => {
                 if (!uniqueCategories.has(item.category)) {
@@ -24,6 +31,7 @@ export default function Home() {
       })
       .catch(err => console.error("Failed to load products", err));
   }, []);
+  // --- වෙනස් කළ කොටස අවසන් ---
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-800">
@@ -39,8 +47,8 @@ export default function Home() {
             <nav className="hidden md:flex gap-8 font-bold text-sm uppercase items-center">
               <Link href="/" className="text-yellow-400 border-b-2 border-yellow-400 pb-1">Home</Link>
               <Link href="/products" className="hover:text-yellow-400 transition">Products</Link>
-              {/* වෙනස් කළා: දැන් කෙලින්ම Contact Page එකට යනවා */}
               <Link href="/contact" className="hover:text-yellow-400 transition">Contact Us</Link>
+              <Link href="/admin" className="bg-yellow-500 text-blue-900 px-4 py-2 rounded hover:bg-yellow-400 transition">Admin</Link>
             </nav>
             <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X /> : <Menu />}
@@ -146,7 +154,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* --- FOOTER (Simplified) --- */}
+      {/* --- FOOTER --- */}
       <footer className="bg-blue-950 text-white py-12 border-t-8 border-yellow-400">
          <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
             <div>

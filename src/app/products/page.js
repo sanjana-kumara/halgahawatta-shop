@@ -17,11 +17,20 @@ export default function ProductsPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // --- ඔයාගේ Phone Number එක මෙතන තියෙනවද බලන්න ---
-  const whatsappNumber = "947XXXXXXXX"; 
+  const whatsappNumber = "94711858594"; // Country code එකත් එක්ක දාන්න (e.g., Sri Lanka සඳහා 94)
+
+  // Load Products Data
 
   useEffect(() => {
-    fetch('/products.json')
-      .then(res => res.json())
+    // GitHub Pages Path Fix
+    const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+    const basePath = isGitHubPages ? '/halgahawatta-shop' : '';
+
+    fetch(`${basePath}/products.json`)
+      .then(res => {
+         if (!res.ok) { throw new Error("HTTP error " + res.status); }
+         return res.json();
+      })
       .then(data => {
         if(Array.isArray(data)) setProducts(data);
       })
