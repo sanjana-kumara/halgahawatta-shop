@@ -15,13 +15,11 @@ export default function ProductsPage() {
   const [filter, setFilter] = useState({ category: 'All', brand: 'All', minPrice: '', maxPrice: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showFilters, setShowFilters] = useState(false); // Mobile Filter Toggle State
+  const [showFilters, setShowFilters] = useState(false);
 
-  // WhatsApp Number
   const whatsappNumber = "94711858594"; 
 
   useEffect(() => {
-    // Fetch products.json directly due to Custom Domain
     fetch('/products.json')
       .then(res => res.json())
       .then(data => {
@@ -33,18 +31,23 @@ export default function ProductsPage() {
   const categories = ['All', ...new Set(products.map(p => p.category).filter(Boolean))];
   const brands = ['All', ...new Set(products.map(p => p.brand).filter(Boolean))];
 
+  // --- FIXED FILTER LOGIC ---
   const filteredProducts = products.filter(p => {
     const matchCategory = filter.category === 'All' || p.category === filter.category;
     const matchBrand = filter.brand === 'All' || p.brand === filter.brand;
     const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const price = Number(p.price);
+    // Fix: Remove commas from price string before converting to number
+    const rawPrice = p.price ? p.price.toString().replace(/,/g, '') : "0";
+    const price = parseFloat(rawPrice);
+
     const min = filter.minPrice ? Number(filter.minPrice) : 0;
     const max = filter.maxPrice ? Number(filter.maxPrice) : 10000000;
     const matchPrice = price >= min && price <= max;
 
     return matchCategory && matchBrand && matchSearch && matchPrice;
   });
+  // --------------------------
 
   const getWhatsAppLink = (productName, price) => {
     const message = `Hi, I am interested in buying: ${productName} (Rs.${price}). Is it available?`;
@@ -53,7 +56,6 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
-      {/* Navbar */}
       <header className="bg-blue-900 text-white shadow-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
             <Link href="/">
@@ -79,13 +81,8 @@ export default function ProductsPage() {
         )}
       </header>
 
-      {/* Main Shop Area */}
       <main className="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
-        
-        {/* --- FILTERS SIDEBAR (UPDATED) --- */}
         <aside className="w-full md:w-1/4 bg-white p-5 rounded-lg shadow-sm border border-gray-200 h-fit sticky top-20">
-          
-          {/* Header - Clickable on Mobile to Toggle */}
           <div 
             className="flex justify-between items-center mb-4 border-b-2 border-yellow-400 pb-2 cursor-pointer md:cursor-default"
             onClick={() => setShowFilters(!showFilters)}
@@ -94,16 +91,12 @@ export default function ProductsPage() {
               <Filter size={20} className="text-blue-900"/>
               <h3 className="font-bold text-lg text-blue-900">FILTERS</h3>
             </div>
-            {/* Show Arrow Icon only on Mobile */}
             <div className="md:hidden text-blue-900">
                {showFilters ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}
             </div>
           </div>
           
-          {/* Filter Content - Hidden on Mobile unless Toggled, Always Visible on Desktop */}
           <div className={`${showFilters ? 'block' : 'hidden'} md:block space-y-6`}>
-            
-            {/* Search */}
             <div>
                <div className="relative">
                   <input type="text" placeholder="Search..." className="w-full p-2 pl-8 border rounded bg-gray-50"
@@ -136,7 +129,6 @@ export default function ProductsPage() {
           </div>
         </aside>
 
-        {/* Product Grid */}
         <section className="w-full md:w-3/4">
           <div className="mb-4 flex justify-between items-center">
              <h2 className="text-2xl font-bold text-gray-700">All Products</h2>
@@ -156,15 +148,13 @@ export default function ProductsPage() {
                 </div>
                 <div className="mt-auto flex justify-between items-center pt-2">
                    <p className="text-xl font-bold text-blue-900">Rs.{product.price}</p>
-                   
-                   {/* WhatsApp Button */}
                    <a 
                      href={getWhatsAppLink(product.name, product.price)}
                      target="_blank"
                      rel="noopener noreferrer"
                      className="bg-green-500 p-2 rounded-full text-white hover:bg-green-600 transition flex items-center gap-2 px-4 text-sm font-bold"
                    >
-                     <WhatsAppIcon /> Buy
+                     <WhatsAppIcon />
                    </a>
                 </div>
               </div>

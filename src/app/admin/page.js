@@ -20,7 +20,7 @@ export default function Admin() {
   const [existingCategories, setExistingCategories] = useState([]);
   const [existingBrands, setExistingBrands] = useState([]);
 
-  // 1. Fetch existing data (for dropdowns)
+  // 1. Fetch existing data (for Dropdowns)
   useEffect(() => {
     fetch('/products.json')
       .then(res => res.json())
@@ -74,26 +74,34 @@ export default function Admin() {
     setStatus('Uploading Image...');
 
     try {
-      // A. Upload Image and get the link
+      // A. Upload Image and get URL
       const imageUrl = await uploadImage();
       
       setStatus('Fetching GitHub data...');
-      // B. Read existing products.json from GitHub (SHA is required)
+      // B. Fetch current products.json from GitHub (SHA required)
       const repoUrl = `https://api.github.com/repos/${process.env.NEXT_PUBLIC_REPO_OWNER}/${process.env.NEXT_PUBLIC_REPO_NAME}/contents/public/products.json`;
       
       const getRes = await axios.get(repoUrl, {
         headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}` }
       });
 
-      // Decode Data (GitHub sends content in Base64)
+      // Decode content (GitHub returns Base64)
       const currentContent = decodeURIComponent(escape(atob(getRes.data.content)));
       const currentData = JSON.parse(currentContent);
       const sha = getRes.data.sha;
+
+      // --- PRICE FORMATTING LOGIC ---
+      // Format price to "2,500.00"
+      const formattedPrice = parseFloat(product.price).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
 
       // C. Add new product
       const newProduct = {
         id: Date.now(),
         ...product,
+        price: formattedPrice, // Save formatted price
         image: imageUrl
       };
       const updatedData = [...currentData, newProduct];
@@ -101,7 +109,7 @@ export default function Admin() {
       // D. Save back to GitHub
       setStatus('Saving to GitHub...');
       
-      // Encode JSON back to Base64 (for UTF-8 support)
+      // Encode JSON to Base64 (for UTF-8 support)
       const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(updatedData, null, 2))));
 
       await axios.put(repoUrl, {
@@ -127,7 +135,7 @@ export default function Admin() {
     setLoading(false);
   };
 
-  // Show login form if not logged in
+  // Show Login Form if not logged in
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-blue-900">
@@ -141,7 +149,7 @@ export default function Admin() {
     );
   }
 
-  // Show product form after login
+  // Show Product Form after login
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded shadow-lg">
@@ -181,7 +189,7 @@ export default function Admin() {
           {/* Price */}
           <div>
             <label className="block text-sm font-semibold mb-1">Price (LKR)</label>
-            <input required type="number" placeholder="2500" className="w-full p-2 border rounded" 
+            <input required type="number" step="0.01" placeholder="2500" className="w-full p-2 border rounded" 
                 value={product.price} onChange={e => setProduct({...product, price: e.target.value})} />
           </div>
           
