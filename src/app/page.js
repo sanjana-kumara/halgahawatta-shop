@@ -158,7 +158,7 @@ export default function Home() {
             <div>
                <h3 className="text-lg font-bold mb-4 text-yellow-400">Contact Us</h3>
                <p className="mb-2">Ramya Building, Dompe</p>
-               <p className="mb-2">07X - XXX XXXX</p>
+               <p className="mb-2">071 185 8594</p>
             </div>
             <div>
                <h3 className="text-lg font-bold mb-4 text-yellow-400">Quick Links</h3>

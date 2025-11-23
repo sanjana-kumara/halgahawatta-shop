@@ -8,10 +8,10 @@ export default function ContactPage() {
 
   // ඔයාගේ ෂොප් එකේ විස්තර මෙතන වෙනස් කරන්න
   const contactInfo = {
-    phone: "07X - XXX XXXX",
+    phone: "071 185 8594",
     address: "Ramya Building, Dompe, Sri Lanka",
-    email: "halgahawatta@email.com", // මේක නැත්නම් අයින් කරන්න පුළුවන්
-    hours: "Mon - Sat: 8:00 AM - 6:00 PM"
+    email: "halgahawattahardware@gmail.com", // මේක නැත්නම් අයින් කරන්න පුළුවන්
+    hours: "Tue - Sun: 9:300 AM - 7:30 PM"
   };
 
   return (
@@ -82,7 +82,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-bold text-gray-700">Opening Hours</h3>
                       <p className="text-gray-500">{contactInfo.hours}</p>
-                      <p className="text-gray-400 text-sm">Sunday: Closed</p>
+                      <p className="text-gray-400 text-sm">Monday: Closed</p>
                     </div>
                  </div>
 
@@ -101,7 +101,7 @@ export default function ContactPage() {
                    Call Now
                  </a>
                  {/* WhatsApp Button - ඔයාගේ අංකය මෙතනට දාන්න (94...) */}
-                 <a href="https://wa.me/947XXXXXXXX" target="_blank" className="bg-green-500 text-white py-3 rounded-lg font-bold text-center hover:bg-green-600 transition flex justify-center items-center gap-2">
+                 <a href="https://wa.me/94711858594" target="_blank" className="bg-green-500 text-white py-3 rounded-lg font-bold text-center hover:bg-green-600 transition flex justify-center items-center gap-2">
                    Chat on WhatsApp
                  </a>
                </div>
