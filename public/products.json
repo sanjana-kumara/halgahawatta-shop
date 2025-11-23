@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Sample Paint Bucket",
     "description": "This is a sample product description.",
-    "price": "2500",
+    "price": "2,500.00",
     "category": "Paints",
     "brand": "WAPP",
     "image": "https://via.placeholder.com/300"
@@ -13,7 +13,7 @@
     "name": "sffdsfds",
     "category": "Paints",
     "brand": "WAPP",
-    "price": "8000",
+    "price": "8,000.00",
     "description": "cdscscdc",
     "image": "https://res.cloudinary.com/dzku6byci/image/upload/v1763882690/hxvall7io8d9z2rpi2xc.jpg"
   },
@@ -22,7 +22,7 @@
     "name": "EMULSION BRILLIANT WHITE 20L",
     "category": "Paints",
     "brand": "JAT",
-    "price": "13800",
+    "price": "13,800.00",
     "description": "Product Details Of WHITE by JAT Interior Emulsion :- \n * Coverage up to 225 sq. Feet per Litre.\n * Touch dry in 15-30 minutes.\n * Can be recoated in 2-4 hours.\n * Can be applied with a brush or roller.\n * Can be diluted up to 50% of water by volume of paint.",
     "image": "https://res.cloudinary.com/dzku6byci/image/upload/v1763913090/qxberimz6gcgsmrl7u82.jpg"
   },
@@ -31,7 +31,7 @@
     "name": "EMULSION BRILLIANT WHITE 4L",
     "category": "Paints",
     "brand": "JAT",
-    "price": "5500.00",
+    "price": "5,500.00",
     "description": "Exterior Emulsion Brilliant White Paint\n\n* Exterior emulsion brilliant white paint is a high-quality, weather-resistant coating designed for outdoor surfaces. It provides a bright, clean, and long-lasting white finish while protecting walls from harsh environmental conditions such as rain, UV rays, and dirt accumulation.",
     "image": "https://res.cloudinary.com/dzku6byci/image/upload/v1763913854/u8hmlczslmnvotnbig1e.jpg"
   }
