@@ -75,7 +75,6 @@ export default function Home() {
             <Link href="/" className="text-yellow-400">Home</Link>
             <Link href="/products" className="text-white">Products</Link>
             <Link href="/contact" className="text-white">Contact Us</Link>
-            <Link href="/admin" className="text-white">Admin Login</Link>
           </div>
         )}
       </header>
@@ -146,7 +145,6 @@ export default function Home() {
       <div className="bg-yellow-400 py-6">
          <div className="container mx-auto px-4 flex flex-wrap justify-center md:justify-between gap-6 text-blue-900 font-bold">
             <div className="flex items-center gap-2"><CheckCircle /> 100% Genuine Quality</div>
-            <div className="flex items-center gap-2"><Truck /> Fast Delivery Available</div>
             <div className="flex items-center gap-2"><Phone /> 24/7 Customer Support</div>
             <div className="flex items-center gap-2"><MapPin /> Located in Dompe</div>
          </div>
