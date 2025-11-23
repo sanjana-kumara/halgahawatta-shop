@@ -7,17 +7,10 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // --- වෙනස් කළ කොටස පටන් ගන්නේ මෙතැනින් ---
   useEffect(() => {
-    // GitHub Pages වලදී URL එක වෙනස් වෙන නිසා Repo නම එකතු කරන්න ඕනේ
-    const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
-    const basePath = isGitHubPages ? '/halgahawatta-shop' : '';
-
-    fetch(`${basePath}/products.json`)
-      .then(res => {
-        if (!res.ok) { throw new Error("HTTP error " + res.status); }
-        return res.json();
-      })
+    // දැන් Custom Domain තියෙන නිසා කෙලින්ම /products.json කියලා දුන්නම ඇති
+    fetch('/products.json')
+      .then(res => res.json())
       .then(data => {
         if(Array.isArray(data)) {
             const uniqueCategories = new Map();
@@ -31,7 +24,6 @@ export default function Home() {
       })
       .catch(err => console.error("Failed to load products", err));
   }, []);
-  // --- වෙනස් කළ කොටස අවසන් ---
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-800">
@@ -48,7 +40,6 @@ export default function Home() {
               <Link href="/" className="text-yellow-400 border-b-2 border-yellow-400 pb-1">Home</Link>
               <Link href="/products" className="hover:text-yellow-400 transition">Products</Link>
               <Link href="/contact" className="hover:text-yellow-400 transition">Contact Us</Link>
-              <Link href="/admin" className="bg-yellow-500 text-blue-900 px-4 py-2 rounded hover:bg-yellow-400 transition">Admin</Link>
             </nav>
             <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X /> : <Menu />}
@@ -108,7 +99,6 @@ export default function Home() {
       <div className="bg-yellow-400 py-6">
          <div className="container mx-auto px-4 flex flex-wrap justify-center md:justify-between gap-6 text-blue-900 font-bold">
             <div className="flex items-center gap-2"><CheckCircle /> 100% Genuine Quality</div>
-            <div className="flex items-center gap-2"><Truck /> Fast Delivery Available</div>
             <div className="flex items-center gap-2"><Phone /> 24/7 Customer Support</div>
             <div className="flex items-center gap-2"><MapPin /> Located in Dompe</div>
          </div>
@@ -183,4 +173,4 @@ export default function Home() {
       </footer>
     </div>
   );
-}
+}F

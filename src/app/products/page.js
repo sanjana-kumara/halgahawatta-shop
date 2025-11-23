@@ -22,15 +22,9 @@ export default function ProductsPage() {
   // Load Products Data
 
   useEffect(() => {
-    // GitHub Pages Path Fix
-    const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
-    const basePath = isGitHubPages ? '/halgahawatta-shop' : '';
-
-    fetch(`${basePath}/products.json`)
-      .then(res => {
-         if (!res.ok) { throw new Error("HTTP error " + res.status); }
-         return res.json();
-      })
+    // Custom Domain එක නිසා කෙලින්ම /products.json ගන්න
+    fetch('/products.json')
+      .then(res => res.json())
       .then(data => {
         if(Array.isArray(data)) setProducts(data);
       })
