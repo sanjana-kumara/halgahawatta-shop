@@ -34,5 +34,14 @@
     "price": "5,500.00",
     "description": "Exterior Emulsion Brilliant White Paint\n\n* Exterior emulsion brilliant white paint is a high-quality, weather-resistant coating designed for outdoor surfaces. It provides a bright, clean, and long-lasting white finish while protecting walls from harsh environmental conditions such as rain, UV rays, and dirt accumulation.",
     "image": "https://res.cloudinary.com/dzku6byci/image/upload/v1763913854/u8hmlczslmnvotnbig1e.jpg"
+  },
+  {
+    "id": 1763914221490,
+    "name": "EMULSION BRILLIANT WHITE 1L",
+    "category": "Paints",
+    "brand": "JAT",
+    "price": "1050.00",
+    "description": "WALLZ Interior Emulsion\n\nWALLZ Interior Emulsion redefines the concept of value, offering a pocket-friendly option without compromising on quality. Its superior formulation guarantees a premium finish for your interior walls that exudes elegance and refinement.",
+    "image": "https://res.cloudinary.com/dzku6byci/image/upload/v1763914220/pzykxdz36gnfplrc73pu.jpg"
   }
 ]
