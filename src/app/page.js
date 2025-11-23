@@ -6,9 +6,33 @@ import Link from 'next/link';
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
+  // --- IMAGES 10 LIST ---
+  const heroImages = [
+    "https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=1000&auto=format&fit=crop", // Paint Buckets
+    "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=1000&auto=format&fit=crop", // Tools
+    "https://images.unsplash.com/photo-1581783342308-f792ca93d4f2?q=80&w=1000&auto=format&fit=crop", // Paint Wall
+    "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=1000&auto=format&fit=crop", // Construction Site
+    "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=1000&auto=format&fit=crop", // Hammer & Nails
+    "https://images.unsplash.com/photo-1581094794329-cd1096a7a2e8?q=80&w=1000&auto=format&fit=crop", // Drill
+    "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=1000&auto=format&fit=crop", // Electrician Tools
+    "https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?q=80&w=1000&auto=format&fit=crop", // Plumbing
+    "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop", // Wood/Timber
+    "https://images.unsplash.com/photo-1590479773265-7464e5d48118?q=80&w=1000&auto=format&fit=crop"  // Safety Helmet
+  ];
+
+  // --- SLIDER LOGIC ---
   useEffect(() => {
-    // දැන් Custom Domain තියෙන නිසා කෙලින්ම /products.json කියලා දුන්නම ඇති
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(timer);
+  }, []);
+
+  // --- FETCH PRODUCTS ---
+  useEffect(() => {
+    // Fetch products directly as we are using a Custom Domain
     fetch('/products.json')
       .then(res => res.json())
       .then(data => {
@@ -56,16 +80,18 @@ export default function Home() {
         )}
       </header>
 
-      {/* --- HERO SECTION --- */}
-      <section className="relative bg-blue-900 text-white py-24 overflow-hidden">
+      {/* --- HERO SECTION (CIRCLE SLIDER) --- */}
+      <section className="relative bg-blue-900 text-white py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center relative z-10">
-          <div className="md:w-1/2 text-center md:text-left">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center relative z-10 gap-10">
+          
+          {/* Left Side: Text */}
+          <div className="md:w-1/2 text-center md:text-left z-20">
             <span className="bg-yellow-400 text-blue-900 px-3 py-1 text-xs font-bold rounded mb-4 inline-block uppercase tracking-widest">
-              Build With Confidence
+              BUILD WITH CONFIDENCE
             </span>
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
               Premium <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">Hardware</span> <br/> Supplies.
             </h1>
             <p className="text-blue-100 text-lg mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed">
@@ -81,17 +107,38 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Hero Visual */}
-          <div className="md:w-1/2 mt-12 md:mt-0 flex justify-center relative">
-             <div className="w-72 h-72 md:w-96 md:h-96 bg-gradient-to-tr from-blue-600 to-blue-400 rounded-full flex items-center justify-center relative z-10 shadow-2xl border-4 border-white/20">
-                <div className="text-center">
-                   <h2 className="text-6xl font-black text-white/20">2025</h2>
-                   <p className="font-bold text-white/60 uppercase tracking-[0.5em]">Collection</p>
+          {/* Right Side: CIRCLE SLIDER */}
+          <div className="md:w-1/2 w-full flex justify-center">
+             {/* 'rounded-full' makes it a circle, 'aspect-square' keeps it circular */}
+             <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden shadow-2xl border-8 border-white/20 bg-blue-800">
+                {heroImages.map((img, index) => (
+                   // eslint-disable-next-line @next/next/no-img-element
+                   <img 
+                      key={index}
+                      src={img} 
+                      alt="Hardware Slider" 
+                      className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+                          index === currentSlide ? 'opacity-100 scale-110' : 'opacity-0 scale-100'
+                      }`}
+                   />
+                ))}
+                
+                {/* Optional: Overlay text inside circle */}
+                <div className="absolute inset-0 bg-black/10"></div>
+                
+                {/* Dots indicator inside circle */}
+                <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-1">
+                  {heroImages.map((_, i) => (
+                    <div key={i} className={`w-1.5 h-1.5 rounded-full transition-all ${i === currentSlide ? 'bg-yellow-400 w-4' : 'bg-white/60'}`}></div>
+                  ))}
                 </div>
              </div>
-             <div className="absolute top-0 right-10 w-24 h-24 bg-yellow-400 rounded-full blur-xl opacity-60 animate-pulse"></div>
-             <div className="absolute bottom-0 left-10 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-60"></div>
+             
+             {/* Decorative Blur Effects around the circle */}
+             <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-yellow-400 rounded-full blur-3xl opacity-20 -z-10 animate-pulse"></div>
+             <div className="absolute bottom-0 left-1/2 w-40 h-40 bg-blue-500 rounded-full blur-3xl opacity-30 -z-10"></div>
           </div>
+
         </div>
       </section>
 
@@ -99,6 +146,7 @@ export default function Home() {
       <div className="bg-yellow-400 py-6">
          <div className="container mx-auto px-4 flex flex-wrap justify-center md:justify-between gap-6 text-blue-900 font-bold">
             <div className="flex items-center gap-2"><CheckCircle /> 100% Genuine Quality</div>
+            <div className="flex items-center gap-2"><Truck /> Fast Delivery Available</div>
             <div className="flex items-center gap-2"><Phone /> 24/7 Customer Support</div>
             <div className="flex items-center gap-2"><MapPin /> Located in Dompe</div>
          </div>

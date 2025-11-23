@@ -20,7 +20,7 @@ export default function Admin() {
   const [existingCategories, setExistingCategories] = useState([]);
   const [existingBrands, setExistingBrands] = useState([]);
 
-  // 1. කලින් තියෙන Data ගන්නවා (Dropdowns වලට)
+  // 1. Fetch existing data (for dropdowns)
   useEffect(() => {
     fetch('/products.json')
       .then(res => res.json())
@@ -40,11 +40,11 @@ export default function Admin() {
         password === process.env.NEXT_PUBLIC_ADMIN_PASS) {
       setIsLoggedIn(true);
     } else {
-      alert("වැරදි Username හෝ Password එකක්!");
+      alert("Invalid Username or Password!");
     }
   };
 
-  // 3. Cloudinary එකට Image Upload කිරීම
+  // 3. Upload Image to Cloudinary
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append('file', imageFile);
@@ -62,35 +62,35 @@ export default function Admin() {
     }
   };
 
-  // 4. GitHub එක Update කිරීම (Main Logic)
+  // 4. Update GitHub (Main Logic)
   const handleSave = async (e) => {
     e.preventDefault();
     if (!imageFile) {
-        alert("කරුණාකර Image එකක් තෝරන්න");
+        alert("Please select an image");
         return;
     }
 
     setLoading(true);
-    setStatus('Image එක Upload වෙමින් පවතී...');
+    setStatus('Uploading Image...');
 
     try {
-      // A. Image එක Upload කරලා Link එක ගැනීම
+      // A. Upload Image and get the link
       const imageUrl = await uploadImage();
       
-      setStatus('GitHub දත්ත ලබා ගනිමින්...');
-      // B. දැනට GitHub එකේ තියෙන products.json එක කියවීම (SHA එක අවශ්‍යයි)
+      setStatus('Fetching GitHub data...');
+      // B. Read existing products.json from GitHub (SHA is required)
       const repoUrl = `https://api.github.com/repos/${process.env.NEXT_PUBLIC_REPO_OWNER}/${process.env.NEXT_PUBLIC_REPO_NAME}/contents/public/products.json`;
       
       const getRes = await axios.get(repoUrl, {
         headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}` }
       });
 
-      // Data Decode කිරීම (GitHub එවන්නේ Base64 වලින්)
+      // Decode Data (GitHub sends content in Base64)
       const currentContent = decodeURIComponent(escape(atob(getRes.data.content)));
       const currentData = JSON.parse(currentContent);
       const sha = getRes.data.sha;
 
-      // C. අලුත් Product එක Add කිරීම
+      // C. Add new product
       const newProduct = {
         id: Date.now(),
         ...product,
@@ -98,10 +98,10 @@ export default function Admin() {
       };
       const updatedData = [...currentData, newProduct];
 
-      // D. ආපහු GitHub එකට Save කිරීම
-      setStatus('GitHub වෙත Save කරමින්...');
+      // D. Save back to GitHub
+      setStatus('Saving to GitHub...');
       
-      // JSON එක නැවත Base64 කිරීම (UTF-8 support සඳහා)
+      // Encode JSON back to Base64 (for UTF-8 support)
       const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(updatedData, null, 2))));
 
       await axios.put(repoUrl, {
@@ -112,22 +112,22 @@ export default function Admin() {
         headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}` }
       });
 
-      setStatus('සාර්ථකයි! විනාඩි 1-2 කින් Site එක Update වේවි.');
+      setStatus('Success! Site will update in 1-2 mins.');
       alert('Product Added Successfully!');
       
-      // Form එක Reset කිරීම
+      // Reset Form
       setProduct({ name: '', category: '', brand: '', price: '', description: '' });
       setImageFile(null);
 
     } catch (error) {
       console.error(error);
-      setStatus('දෝෂයක් සිදු විය. Console එක පරීක්ෂා කරන්න.');
+      setStatus('An error occurred. Check console.');
       alert('Error: ' + error.message);
     }
     setLoading(false);
   };
 
-  // Login වෙලා නැත්නම් Login Form එක පෙන්නනවා
+  // Show login form if not logged in
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-blue-900">
@@ -141,7 +141,7 @@ export default function Admin() {
     );
   }
 
-  // Login වුනාට පස්සේ Product Form එක පෙන්නනවා
+  // Show product form after login
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded shadow-lg">

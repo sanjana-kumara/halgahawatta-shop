@@ -6,12 +6,12 @@ import Link from 'next/link';
 export default function ContactPage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    // ඔයාගේ ෂොප් එකේ විස්තර මෙතන වෙනස් කරන්න
+    // Change your shop details here
     const contactInfo = {
         phone: "071 185 8594",
         address: "Ramya Building, Dompe, Sri Lanka",
-        email: "halgahawattahardware@gmail.com", // මේක නැත්නම් අයින් කරන්න පුළුවන්
-        hours: "Tue - Sun: 9:300 AM - 7:30 PM"
+        email: "halgahawattahardware@gmail.com", // Can be removed if not needed
+        hours: "Tue - Sun: 9:30 AM - 7:30 PM"
     };
 
     return (
@@ -100,7 +100,7 @@ export default function ContactPage() {
                                 <a href={`tel:${contactInfo.phone}`} className="bg-blue-900 text-white py-3 rounded-lg font-bold text-center hover:bg-blue-800 transition">
                                     Call Now
                                 </a>
-                                {/* WhatsApp Button - ඔයාගේ අංකය මෙතනට දාන්න (94...) */}
+                                {/* WhatsApp Button - Replace with your number (94...) */}
                                 <a href="https://wa.me/94711858594" target="_blank" className="bg-green-500 text-white py-3 rounded-lg font-bold text-center hover:bg-green-600 transition flex justify-center items-center gap-2">
                                     Chat on WhatsApp
                                 </a>
@@ -112,7 +112,6 @@ export default function ContactPage() {
                     <div className="bg-white p-2 rounded-xl shadow-sm h-[500px] border border-gray-200">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d247.53002393599576!2d80.05205133780775!3d6.952521481596289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae255a9b593119b%3A0x94af1681bed41973!2sHalgahawatta%20Hardware!5e0!3m2!1sen!2slk!4v1763885341382!5m2!1sen!2slk"
-                            allowfullscreen=""
                             width="100%"
                             height="100%"
                             style={{ border: 0, borderRadius: '8px' }}
@@ -120,7 +119,7 @@ export default function ContactPage() {
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade">
                         </iframe>
-                        {/* Note: මම දැම්මේ දොම්පේ නගරයේ පොදු මැප් එකක්. ඔයාගේ හරියටම තැන මැප් එකෙන් අරගෙන මෙතන src එක මාරු කරන්න පුළුවන් */}
+                        {/* Note: I used a general map of Dompe. You can get the exact src from Google Maps share > embed */}
                     </div>
 
                 </div>

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Search, Menu, X, Filter } from 'lucide-react';
+import { Search, Menu, X, Filter, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 
 // WhatsApp Icon Component
@@ -15,14 +15,13 @@ export default function ProductsPage() {
   const [filter, setFilter] = useState({ category: 'All', brand: 'All', minPrice: '', maxPrice: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false); // Mobile Filter Toggle State
 
-  // --- ඔයාගේ Phone Number එක මෙතන තියෙනවද බලන්න ---
-  const whatsappNumber = "94711858594"; // Country code එකත් එක්ක දාන්න (e.g., Sri Lanka සඳහා 94)
-
-  // Load Products Data
+  // WhatsApp Number
+  const whatsappNumber = "94711858594"; 
 
   useEffect(() => {
-    // Custom Domain එක නිසා කෙලින්ම /products.json ගන්න
+    // Fetch products.json directly due to Custom Domain
     fetch('/products.json')
       .then(res => res.json())
       .then(data => {
@@ -65,7 +64,6 @@ export default function ProductsPage() {
             <nav className="hidden md:flex gap-8 font-bold text-sm uppercase items-center">
               <Link href="/" className="hover:text-yellow-400 transition">Home</Link>
               <Link href="/products" className="text-yellow-400">Products</Link>
-              {/* --- FIXED: Contact Link Updated --- */}
               <Link href="/contact" className="hover:text-yellow-400 transition">Contact</Link>
             </nav>
             <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -83,42 +81,58 @@ export default function ProductsPage() {
 
       {/* Main Shop Area */}
       <main className="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
-        {/* Filters Sidebar */}
+        
+        {/* --- FILTERS SIDEBAR (UPDATED) --- */}
         <aside className="w-full md:w-1/4 bg-white p-5 rounded-lg shadow-sm border border-gray-200 h-fit sticky top-20">
-          <div className="flex items-center gap-2 mb-4 border-b-2 border-yellow-400 pb-2">
-            <Filter size={20} className="text-blue-900"/>
-            <h3 className="font-bold text-lg text-blue-900">FILTERS</h3>
+          
+          {/* Header - Clickable on Mobile to Toggle */}
+          <div 
+            className="flex justify-between items-center mb-4 border-b-2 border-yellow-400 pb-2 cursor-pointer md:cursor-default"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <div className="flex items-center gap-2">
+              <Filter size={20} className="text-blue-900"/>
+              <h3 className="font-bold text-lg text-blue-900">FILTERS</h3>
+            </div>
+            {/* Show Arrow Icon only on Mobile */}
+            <div className="md:hidden text-blue-900">
+               {showFilters ? <ChevronUp size={20}/> : <ChevronDown size={20}/>}
+            </div>
           </div>
           
-          {/* Search */}
-          <div className="mb-6">
-             <div className="relative">
-                <input type="text" placeholder="Search..." className="w-full p-2 pl-8 border rounded bg-gray-50"
-                   onChange={(e) => setSearchTerm(e.target.value)} />
-                <Search size={16} className="absolute left-2 top-3 text-gray-400"/>
-             </div>
-          </div>
+          {/* Filter Content - Hidden on Mobile unless Toggled, Always Visible on Desktop */}
+          <div className={`${showFilters ? 'block' : 'hidden'} md:block space-y-6`}>
+            
+            {/* Search */}
+            <div>
+               <div className="relative">
+                  <input type="text" placeholder="Search..." className="w-full p-2 pl-8 border rounded bg-gray-50"
+                     onChange={(e) => setSearchTerm(e.target.value)} />
+                  <Search size={16} className="absolute left-2 top-3 text-gray-400"/>
+               </div>
+            </div>
 
-          <div className="mb-6">
-            <h4 className="font-semibold mb-2 text-sm">Category</h4>
-            <select className="w-full p-2 border rounded" onChange={(e) => setFilter({...filter, category: e.target.value})}>
-              {categories.map((c, i) => <option key={i} value={c}>{c}</option>)}
-            </select>
-          </div>
+            <div>
+              <h4 className="font-semibold mb-2 text-sm">Category</h4>
+              <select className="w-full p-2 border rounded" onChange={(e) => setFilter({...filter, category: e.target.value})}>
+                {categories.map((c, i) => <option key={i} value={c}>{c}</option>)}
+              </select>
+            </div>
 
-          <div className="mb-6">
-            <h4 className="font-semibold mb-2 text-sm">Brand</h4>
-            <select className="w-full p-2 border rounded" onChange={(e) => setFilter({...filter, brand: e.target.value})}>
-              {brands.map((b, i) => <option key={i} value={b}>{b}</option>)}
-            </select>
-          </div>
+            <div>
+              <h4 className="font-semibold mb-2 text-sm">Brand</h4>
+              <select className="w-full p-2 border rounded" onChange={(e) => setFilter({...filter, brand: e.target.value})}>
+                {brands.map((b, i) => <option key={i} value={b}>{b}</option>)}
+              </select>
+            </div>
 
-          <div className="mb-4">
-             <h4 className="font-semibold mb-2 text-sm">Price (LKR)</h4>
-             <div className="flex gap-2">
-               <input type="number" placeholder="Min" className="w-full border p-2 rounded text-sm" onChange={e => setFilter({...filter, minPrice: e.target.value})} />
-               <input type="number" placeholder="Max" className="w-full border p-2 rounded text-sm" onChange={e => setFilter({...filter, maxPrice: e.target.value})} />
-             </div>
+            <div>
+               <h4 className="font-semibold mb-2 text-sm">Price (LKR)</h4>
+               <div className="flex gap-2">
+                 <input type="number" placeholder="Min" className="w-full border p-2 rounded text-sm" onChange={e => setFilter({...filter, minPrice: e.target.value})} />
+                 <input type="number" placeholder="Max" className="w-full border p-2 rounded text-sm" onChange={e => setFilter({...filter, maxPrice: e.target.value})} />
+               </div>
+            </div>
           </div>
         </aside>
 
