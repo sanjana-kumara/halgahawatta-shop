@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "name": "Sample Paint Bucket",
+    "description": "This is a sample product description.",
+    "price": "2500",
+    "category": "Paints",
+    "brand": "WAPP",
+    "image": "https://via.placeholder.com/300"
+  }
+]
